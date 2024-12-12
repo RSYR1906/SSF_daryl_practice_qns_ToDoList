@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Todo Listing</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="container mt-4">
+      <h1 class="text-center">Todo Listing</h1>
+
+      <p class="text-end">
+        Logged in as: <span th:text="${session.fullName}"></span>
+      </p>
+
+      <div class="mb-3 text-end">
+        <a href="/todos/add" class="btn btn-primary">Add New Todo</a>
+      </div>
+
+      <form action="/todos" method="get" class="row g-3 mb-4">
+        <div class="col-auto">
+          <label for="status" class="form-label">Filter by Status</label>
+          <select name="status" id="status" class="form-select">
+            <option
+              value=""
+              th:selected="${selectedStatus == null || selectedStatus == ''}"
+            >
+              All
+            </option>
+            <option
+              value="pending"
+              th:selected="${selectedStatus == 'pending'}"
+            >
+              Pending
+            </option>
+            <option
+              value="started"
+              th:selected="${selectedStatus == 'started'}"
+            >
+              Started
+            </option>
+            <option
+              value="in_progress"
+              th:selected="${selectedStatus == 'in_progress'}"
+            >
+              In Progress
+            </option>
+            <option
+              value="completed"
+              th:selected="${selectedStatus == 'completed'}"
+            >
+              Completed
+            </option>
+          </select>
+        </div>
+        <div class="col-auto align-self-end">
+          <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+      </form>
+
+      <!-- Task Table -->
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Due Date</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Iterate through the HashMap -->
+          <tr th:each="todoEntry : ${todos}">
+            <td th:text="${todoEntry.key}"></td>
+            <td th:text="${todoEntry.value.name}"></td>
+            <td th:text="${todoEntry.value.description}"></td>
+            <td th:text="${todoEntry.value.priority}"></td>
+            <td th:text="${todoEntry.value.status}"></td>
+            <td th:text="${todoEntry.value.dueDate}"></td>
+            <td th:text="${todoEntry.value.createdAt}"></td>
+            <td th:text="${todoEntry.value.updatedAt}"></td>
+            <td>
+              <!-- Actions -->
+              <a
+                th:href="@{/todos/{id}/edit(id=${todoEntry.key})}"
+                class="btn btn-success btn-sm mb-2"
+                >Update</a
+              >
+              <form
+                th:action="@{/todos/{id}/delete(id=${todoEntry.key})}"
+                method="GET"
+                style="display: inline"
+              >
+                <button type="submit" class="btn btn-danger btn-sm">
+                  Delete
+                </button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+  </body>
+</html>

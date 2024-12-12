@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Add Todo</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="container mt-4">
+      <h1 class="text-center">Add New Todo</h1>
+
+      <form action="/todos/add" method="post" th:object="${todo}">
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            th:field="*{name}"
+            placeholder="Enter a name (10-50 characters)"
+            required
+          />
+          <div
+            class="text-danger"
+            th:if="${#fields.hasErrors('name')}"
+            th:errors="*{name}"
+          ></div>
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea
+            class="form-control"
+            id="description"
+            name="description"
+            th:field="*{description}"
+            placeholder="Enter a description (optional, max 255 characters)"
+          ></textarea>
+          <div
+            class="text-danger"
+            th:if="${#fields.hasErrors('description')}"
+            th:errors="*{description}"
+          ></div>
+        </div>
+
+        <div class="mb-3">
+          <label for="priority" class="form-label">Priority</label>
+          <select
+            class="form-select"
+            id="priority"
+            name="priority"
+            th:field="*{priority}"
+            required
+          >
+            <option value="" disabled>Select Priority</option>
+            <option value="low" th:selected="${todo.priority == 'low'}">
+              Low
+            </option>
+            <option value="medium" th:selected="${todo.priority == 'medium'}">
+              Medium
+            </option>
+            <option value="high" th:selected="${todo.priority == 'high'}">
+              High
+            </option>
+          </select>
+          <div
+            class="text-danger"
+            th:if="${#fields.hasErrors('priority')}"
+            th:errors="*{priority}"
+          ></div>
+        </div>
+
+        <div class="mb-3">
+          <label for="status" class="form-label">Status</label>
+          <select
+            class="form-select"
+            id="status"
+            name="status"
+            th:field="*{status}"
+            required
+          >
+            <option value="" disabled>Select Status</option>
+            <option value="pending" th:selected="${todo.status == 'pending'}">
+              Pending
+            </option>
+            <option value="started" th:selected="${todo.status == 'started'}">
+              Started
+            </option>
+            <option
+              value="in_progress"
+              th:selected="${todo.status == 'in_progress'}"
+            >
+              In Progress
+            </option>
+            <option
+              value="completed"
+              th:selected="${todo.status == 'completed'}"
+            >
+              Completed
+            </option>
+          </select>
+          <div
+            class="text-danger"
+            th:if="${#fields.hasErrors('status')}"
+            th:errors="*{status}"
+          ></div>
+        </div>
+
+        <div class="mb-3">
+          <label for="dueDate" class="form-label">Due Date</label>
+          <input
+            type="text"
+            id="dueDate"
+            name="dueDate"
+            th:field="*{dueDate}"
+            placeholder="MM-DD-YYYY"
+          />
+          <span
+            class="text-danger"
+            th:if="${#fields.hasErrors('dueDate')}"
+            th:errors="*{dueDate}"
+          ></span>
+        </div>
+
+        <input type="hidden" id="id" name="id" th:field="*{id}" />
+
+        <input
+          type="hidden"
+          id="createdAt"
+          name="createdAt"
+          th:field="*{createdAt}"
+        />
+        <input
+          type="hidden"
+          id="updatedAt"
+          name="updatedAt"
+          th:field="*{updatedAt}"
+        />
+
+        <button type="submit" class="btn btn-primary">Create</button>
+      </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+  </body>
+</html>
